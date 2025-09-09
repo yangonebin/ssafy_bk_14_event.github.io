@@ -1,8 +1,40 @@
-// 인터랙티브 기능을 추가하기 위한 선택적인 파일입니다.
+// 이 코드를 script.js 파일에 복사하세요.
 
-document.addEventListener('DOMContentLoaded', () => {
-    // 여기에 JavaScript 코드를 넣으면 됩니다.
-    // 간단한 이벤트 페이지에는 이 파일이 필요 없을 수 있습니다.
-    // 어디에 코드를 넣어야 하는지 보여주기 위해 포함했습니다.
-    console.log('페이지가 로드되었습니다.');
+// HTML 요소 가져오기
+const form = document.querySelector('form');
+const usernameInput = document.getElementById('username');
+const passwordInput = document.getElementById('password');
+
+// 파이어베이스 데이터베이스와 연동
+const db = firebase.firestore();
+const adminsRef = db.collection('admins');
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault(); // 페이지 새로고침 방지
+
+    const username = usernameInput.value;
+    const password = passwordInput.value;
+
+    // 데이터베이스에서 사용자 이름과 일치하는 문서 찾기
+    const snapshot = await adminsRef.where('username', '==', username).get();
+
+    if (snapshot.empty) {
+        alert('관리자 아이디가 존재하지 않습니다.');
+        return;
+    }
+
+    let isAdmin = false;
+    snapshot.forEach(doc => {
+        const adminData = doc.data();
+        if (adminData.password === password) {
+            isAdmin = true;
+        }
+    });
+
+    if (isAdmin) {
+        alert('로그인 성공! 관리자 페이지로 이동합니다.');
+        // TODO: 성공 시 관리자 대시보드 페이지로 이동하는 코드 추가
+    } else {
+        alert('비밀번호가 올바르지 않습니다.');
+    }
 });
