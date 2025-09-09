@@ -33,7 +33,7 @@ form.addEventListener('submit', async (e) => {
 
     if (isAdmin) {
         alert('로그인 성공! 관리자 페이지로 이동합니다.');
-        // TODO: 성공 시 관리자 대시보드 페이지로 이동하는 코드 추가
+        window.location.href = 'dashboard.html'; // 예시: dashboard.html로 이동
     } else {
         alert('비밀번호가 올바르지 않습니다.');
     }
