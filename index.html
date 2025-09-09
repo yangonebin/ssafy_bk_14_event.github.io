@@ -13,6 +13,7 @@
         input { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
         button { width: 100%; padding: 12px; background-color: #28a745; color: #fff; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
         button:hover { background-color: #218838; }
+        #loading-message { display: none; color: #555; margin-top: 15px; font-weight: bold; }
         .footer-link { margin-top: 20px; }
         .footer-link a { color: #007bff; text-decoration: none; font-size: 14px; }
     </style>
@@ -31,6 +32,7 @@
             </div>
             <button type="submit">제출하기</button>
         </form>
+        <p id="loading-message">파일이 제출 중입니다. 잠시만 기다려주세요...</p>
     </div>
     <div class="footer-link">
         <a href="admin.html">관리자 로그인</a>
@@ -58,6 +60,9 @@
                 const storageRef = storage.ref();
 
                 const submissionForm = document.getElementById('submission-form');
+                const loadingMessage = document.getElementById('loading-message');
+                const submitButton = submissionForm.querySelector('button[type="submit"]');
+
                 if (submissionForm) {
                     submissionForm.addEventListener('submit', async (e) => {
                         e.preventDefault();
@@ -67,8 +72,14 @@
                             alert('파일을 선택해주세요.');
                             return;
                         }
+
+                        // 로딩 메시지를 표시하고 버튼을 비활성화합니다.
+                        loadingMessage.style.display = 'block';
+                        submitButton.disabled = true;
+
                         const fileName = `${Date.now()}_${file.name}`;
                         const fileRef = storageRef.child(fileName);
+
                         try {
                             await fileRef.put(file);
                             await db.collection('submissions').add({
@@ -81,6 +92,10 @@
                         } catch (error) {
                             console.error("파일 제출 중 오류 발생:", error);
                             alert('파일 제출에 실패했습니다. 콘솔을 확인해주세요.');
+                        } finally {
+                            // 로딩 메시지를 숨기고 버튼을 다시 활성화합니다.
+                            loadingMessage.style.display = 'none';
+                            submitButton.disabled = false;
                         }
                     });
                 }
