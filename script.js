@@ -1,4 +1,15 @@
-// 이 코드를 script.js 파일에 복사하세요.
+// 파이어베이스 설정 코드 (YOUR_API_KEY 부분을 당신의 코드로 교체하세요)
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// 파이어베이스 초기화
+firebase.initializeApp(firebaseConfig);
 
 // HTML 요소 가져오기
 const form = document.querySelector('form');
@@ -15,7 +26,6 @@ form.addEventListener('submit', async (e) => {
     const username = usernameInput.value;
     const password = passwordInput.value;
 
-    // 데이터베이스에서 사용자 이름과 일치하는 문서 찾기
     const snapshot = await adminsRef.where('username', '==', username).get();
 
     if (snapshot.empty) {
@@ -33,7 +43,7 @@ form.addEventListener('submit', async (e) => {
 
     if (isAdmin) {
         alert('로그인 성공! 관리자 페이지로 이동합니다.');
-        window.location.href = 'dashboard.html'; // 예시: dashboard.html로 이동
+        window.location.href = 'dashboard.html';
     } else {
         alert('비밀번호가 올바르지 않습니다.');
     }
