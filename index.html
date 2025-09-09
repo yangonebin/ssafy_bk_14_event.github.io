@@ -1,31 +1,158 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 공모전 파일 제출</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="submit-container">
-        <h2>AI 공모전 파일 제출</h2>
-        <form id="submission-form">
-            <div class="input-group">
-                <label for="name">참가자 이름</label>
-                <input type="text" id="name" required>
-            </div>
-            <div class="input-group">
-                <label for="file">제출 파일</label>
-                <input type="file" id="file" required>
-            </div>
-            <button type="submit">제출하기</button>
-        </form>
-    </div>
-    
-    <div class="footer-link">
-        <a href="admin.html">관리자 로그인</a>
-    </div>
 
-    <script src="main.js"></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 공모전 파일 제출</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .submit-container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .footer-link {
+      margin-top: 20px;
+    }
+
+    .footer-link a {
+      color: #007bff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="submit-container">
+    <h2>AI 공모전 파일 제출</h2>
+    <form id="submission-form">
+      <div class="input-group">
+        <label for="name">참가자 이름</label>
+        <input type="text" id="name" required>
+      </div>
+      <div class="input-group">
+        <label for="file">제출 파일</label>
+        <input type="file" id="file" required>
+      </div>
+      <button type="submit">제출하기</button>
+    </form>
+  </div>
+  <div class="footer-link">
+    <a href="admin.html">관리자 로그인</a>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js"></script>
+
+  <script>
+    window.onload = function () {
+      try {
+        // 파이어베이스 설정: 여기에 당신의 실제 코드를 붙여넣으세요.
+        const firebaseConfig = {
+          apiKey: "AIzaSyAC-6B0FV9UI9hFB_UzEl4iXVQDjq9ukV0",
+          authDomain: "yangonebinaievent.firebaseapp.com",
+          projectId: "yangonebinaievent",
+          storageBucket: "yangonebinaievent.firebasestorage.app",
+          messagingSenderId: "136715708338",
+          appId: "1:136715708338:web:cdf2743235b2829010a6ab",
+          measurementId: "G-CH73R4Y2M1"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+        const storageRef = storage.ref();
+
+        const submissionForm = document.getElementById('submission-form');
+        if (submissionForm) {
+          submissionForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const file = document.getElementById('file').files[0];
+            if (!file) {
+              alert('파일을 선택해주세요.');
+              return;
+            }
+            const fileName = `${Date.now()}_${file.name}`;
+            const fileRef = storageRef.child(fileName);
+            try {
+              await fileRef.put(file);
+              await db.collection('submissions').add({
+                name: name,
+                filename: fileName,
+                date: new Date().toISOString()
+              });
+              alert('파일이 성공적으로 제출되었습니다!');
+              submissionForm.reset();
+            } catch (error) {
+              console.error("파일 제출 중 오류 발생:", error);
+              alert('파일 제출에 실패했습니다. 콘솔을 확인해주세요.');
+            }
+          });
+        }
+      } catch (error) {
+        console.error("파이어베이스 초기화 오류:", error);
+        alert('파이어베이스 설정에 문제가 있습니다. 콘솔을 확인해주세요.');
+      }
+    };
+  </script>
 </body>
+
 </html>
