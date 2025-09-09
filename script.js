@@ -1,3 +1,4 @@
+alert("자바스크립트 파일이 연결되었습니다!");
 // 모든 파이어베이스 SDK를 여기서 불러옵니다.
 const fireApp = document.createElement('script');
 fireApp.src = "https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js";
