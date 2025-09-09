@@ -25,46 +25,6 @@
             <button id="logout-btn">로그아웃</button>
         </div>
     </div>
-
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
-
-    <script>
-        // 파이어베이스 설정: 이 부분에 당신의 실제 코드를 붙여넣으세요.
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const submissionsTableBody = document.getElementById('submissions-table-body');
-            const logoutBtn = document.getElementById('logout-btn');
-
-            db.collection('submissions').orderBy('date', 'desc').onSnapshot(snapshot => {
-                submissionsTableBody.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const submission = doc.data();
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${doc.id}</td>
-                        <td>${submission.filename}</td>
-                        <td>${submission.date}</td>
-                        <td>${submission.name}</td>
-                    `;
-                    submissionsTableBody.appendChild(row);
-                });
-            });
-
-            logoutBtn.addEventListener('click', () => {
-                window.location.href = 'admin.html';
-            });
-        });
-    </script>
+    <script src="main.js"></script>
 </body>
 </html>
