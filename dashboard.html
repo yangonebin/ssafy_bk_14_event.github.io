@@ -45,7 +45,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const submissionsTableBody = document.getElementById('submissions-table-body');
             const logoutBtn = document.getElementById('logout-btn');
-            
+
             db.collection('submissions').orderBy('date', 'desc').onSnapshot(snapshot => {
                 submissionsTableBody.innerHTML = '';
                 snapshot.forEach(doc => {
