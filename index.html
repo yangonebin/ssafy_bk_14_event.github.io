@@ -2,11 +2,25 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=admin.html">
-    <title>관리자 페이지로 이동</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 공모전 파일 제출</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <p>관리자 페이지로 이동 중입니다... 잠시만 기다려주세요.</p>
-    <a href="admin.html">수동으로 이동하려면 여기를 클릭하세요.</a>
+    <div class="submit-container">
+        <h2>AI 공모전 파일 제출</h2>
+        <form id="submission-form">
+            <div class="input-group">
+                <label for="name">참가자 이름</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="input-group">
+                <label for="file">제출 파일</label>
+                <input type="file" id="file" required>
+            </div>
+            <button type="submit">제출하기</button>
+        </form>
+    </div>
+    <script src="main.js"></script>
 </body>
 </html>
