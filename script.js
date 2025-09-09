@@ -1,50 +1,60 @@
-// 파이어베이스 설정 코드 (YOUR_API_KEY 부분을 당신의 코드로 교체하세요)
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
-};
+// 모든 파이어베이스 SDK를 여기서 불러옵니다.
+const fireApp = document.createElement('script');
+fireApp.src = "https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js";
+document.head.appendChild(fireApp);
 
-// 파이어베이스 초기화
-firebase.initializeApp(firebaseConfig);
+const fireStore = document.createElement('script');
+fireStore.src = "https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js";
+document.head.appendChild(fireStore);
 
 // HTML 요소 가져오기
 const form = document.querySelector('form');
 const usernameInput = document.getElementById('username');
 const passwordInput = document.getElementById('password');
 
-// 파이어베이스 데이터베이스와 연동
-const db = firebase.firestore();
-const adminsRef = db.collection('admins');
+// 파이어베이스 설정 코드
+const firebaseConfig = {
+    apiKey: "AIzaSyAC-6B0FV9UI9hFB_UzEl4iXVQDjq9ukV0",
+    authDomain: "yangonebinaievent.firebaseapp.com",
+    projectId: "yangonebinaievent",
+    storageBucket: "yangonebinaievent.firebasestorage.app",
+    messagingSenderId: "136715708338",
+    appId: "1:136715708338:web:cdf2743235b2829010a6ab",
+    measurementId: "G-CH73R4Y2M1"
+};
 
-form.addEventListener('submit', async (e) => {
-    e.preventDefault(); // 페이지 새로고침 방지
+// 파이어베이스 초기화
+setTimeout(() => {
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const adminsRef = db.collection('admins');
 
-    const username = usernameInput.value;
-    const password = passwordInput.value;
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault(); // 페이지 새로고침 방지
 
-    const snapshot = await adminsRef.where('username', '==', username).get();
+        const username = usernameInput.value;
+        const password = passwordInput.value;
 
-    if (snapshot.empty) {
-        alert('관리자 아이디가 존재하지 않습니다.');
-        return;
-    }
+        const snapshot = await adminsRef.where('username', '==', username).get();
 
-    let isAdmin = false;
-    snapshot.forEach(doc => {
-        const adminData = doc.data();
-        if (adminData.password === password) {
-            isAdmin = true;
+        if (snapshot.empty) {
+            alert('관리자 아이디가 존재하지 않습니다.');
+            return;
+        }
+
+        let isAdmin = false;
+        snapshot.forEach(doc => {
+            const adminData = doc.data();
+            if (adminData.password === password) {
+                isAdmin = true;
+            }
+        });
+
+        if (isAdmin) {
+            alert('로그인 성공! 관리자 페이지로 이동합니다.');
+            window.location.href = 'dashboard.html';
+        } else {
+            alert('비밀번호가 올바르지 않습니다.');
         }
     });
-
-    if (isAdmin) {
-        alert('로그인 성공! 관리자 페이지로 이동합니다.');
-        window.location.href = 'dashboard.html';
-    } else {
-        alert('비밀번호가 올바르지 않습니다.');
-    }
-});
+}, 1000); // 1초 대기 후 실행
