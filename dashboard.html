@@ -5,13 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>관리자 대시보드</title>
     <link rel="stylesheet" href="style.css">
-    
-    <!-- 파이어베이스 SDK는 HTML에서 한 번만 불러옵니다. -->
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
-    
-    <!-- 모든 기능 코드는 dashboard.js 파일 하나에 넣습니다. -->
-    <script src="dashboard.js" defer></script>
 </head>
 <body>
     <div class="dashboard-container">
@@ -25,13 +18,13 @@
                     <th>참가자 이름</th>
                 </tr>
             </thead>
-            <tbody>
-                <!-- 여기에 파이어베이스에서 가져온 데이터가 자동으로 표시됩니다. -->
-            </tbody>
+            <tbody id="submissions-table-body">
+                </tbody>
         </table>
         <div class="logout-btn-container">
             <button id="logout-btn">로그아웃</button>
         </div>
     </div>
+    <script src="main.js"></script>
 </body>
 </html>
