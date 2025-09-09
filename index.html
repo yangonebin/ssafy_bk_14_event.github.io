@@ -5,6 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 학습 이벤트</title>
     <link rel="stylesheet" href="style.css">
+    <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAC-6B0FV9UI9hFB_UzEl4iXVQDjq9ukV0",
+    authDomain: "yangonebinaievent.firebaseapp.com",
+    projectId: "yangonebinaievent",
+    storageBucket: "yangonebinaievent.firebasestorage.app",
+    messagingSenderId: "136715708338",
+    appId: "1:136715708338:web:cdf2743235b2829010a6ab",
+    measurementId: "G-CH73R4Y2M1"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 </head>
 <body>
     <header>
@@ -35,5 +58,4 @@
         <p>&copy; 2025 AI 학습 이벤트. 모든 권리 보유.</p>
     </footer>
 </body>
-
 </html>
