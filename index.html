@@ -10,7 +10,7 @@
         h2 { color: #333; }
         .input-group { margin-bottom: 20px; text-align: left; }
         label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
-        input { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        input, select { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
         button { width: 100%; padding: 12px; background-color: #28a745; color: #fff; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
         button:hover { background-color: #218838; }
         #loading-message { display: none; color: #555; margin-top: 15px; font-weight: bold; }
@@ -25,6 +25,16 @@
             <div class="input-group">
                 <label for="name">참가자 이름</label>
                 <input type="text" id="name" required>
+            </div>
+            <div class="input-group">
+                <label for="class_num">분반</label>
+                <select id="class_num" required>
+                    <option value="" disabled selected>선택하세요</option>
+                    <option value="1">1반</option>
+                    <option value="2">2반</option>
+                    <option value="3">3반</option>
+                    <option value="4">4반</option>
+                </select>
             </div>
             <div class="input-group">
                 <label for="file">제출 파일</label>
@@ -67,9 +77,15 @@
                     submissionForm.addEventListener('submit', async (e) => {
                         e.preventDefault();
                         const name = document.getElementById('name').value;
+                        const classNum = document.getElementById('class_num').value;
                         const file = document.getElementById('file').files[0];
+
                         if (!file) {
                             alert('파일을 선택해주세요.');
+                            return;
+                        }
+                        if (!classNum) {
+                            alert('분반을 선택해주세요.');
                             return;
                         }
 
@@ -84,6 +100,7 @@
                             await fileRef.put(file);
                             await db.collection('submissions').add({
                                 name: name,
+                                class_num: classNum,
                                 filename: fileName,
                                 date: new Date().toISOString()
                             });
