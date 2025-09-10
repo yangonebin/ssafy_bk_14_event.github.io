@@ -24,18 +24,29 @@ const submissionsBody = document.getElementById('submissions-body');
 const loadingMessage = document.getElementById('loading-message');
 const noSubmissionsMessage = document.getElementById('no-submissions');
 
-// Firestore에서 제출 목록을 가져와 점수(score) 순으로 정렬하여 표시
-db.collection('submissions').orderBy('score', 'desc').onSnapshot(snapshot => {
+// Firestore에서 제출 목록을 가져와 점수(score)가 있는 순서로 정렬하여 표시
+db.collection('submissions').onSnapshot(snapshot => {
+    const submissions = [];
+    snapshot.forEach(doc => {
+        submissions.push(doc.data());
+    });
+
+    // 클라이언트 측에서 점수 순으로 정렬
+    submissions.sort((a, b) => {
+        const scoreA = a.score !== undefined ? a.score : -1;
+        const scoreB = b.score !== undefined ? b.score : -1;
+        return scoreB - scoreA;
+    });
+
     submissionsBody.innerHTML = '';
-    if (snapshot.empty) {
+    if (submissions.length === 0) {
         loadingMessage.style.display = 'none';
         submissionsTable.style.display = 'none';
         noSubmissionsMessage.style.display = 'block';
         return;
     }
 
-    snapshot.forEach(doc => {
-        const data = doc.data();
+    submissions.forEach(data => {
         const row = submissionsBody.insertRow();
 
         // 날짜 포맷 변경 (YYYY-MM-DD HH:MM)
